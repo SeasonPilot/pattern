@@ -1,7 +1,5 @@
 package main
 
-import "errors"
-
 // 定义一个cache接口，作为父类
 type Cache interface {
 	Set(k, v string)
@@ -21,7 +19,7 @@ func (r *Redis) Get(k string) string {
 	return "Redis data:" + r.data[k]
 }
 
-// 实现具体的 cache: MemCache cache
+// 实现具体的 cache: MemFactory cache
 type MemCache struct {
 	data map[string]string
 }
@@ -34,22 +32,24 @@ func (m *MemCache) Get(k string) string {
 	return "Mem data:" + m.data[k]
 }
 
-// 实现 cache 的简单工厂
-type CacheFactory struct{}
+// 抽象工厂
+type CacheFactory interface {
+	Create() Cache
+}
 
-type CacheType int
+type RedisFactory struct{}
 
-const (
-	redis CacheType = iota
-	memcache
-)
-
-func (cf *CacheFactory) Create(cacheType CacheType) (Cache, error) {
-	if cacheType == redis {
-		return &Redis{data: map[string]string{}}, nil
+func (c *RedisFactory) Create() Cache {
+	// Redis{} 里面有 map，要用 make 初始化
+	return &Redis{
+		data: make(map[string]string),
 	}
-	if cacheType == memcache {
-		return &MemCache{data: map[string]string{}}, nil
+}
+
+type MemFactory struct{}
+
+func (c *MemFactory) Create() Cache {
+	return &MemCache{
+		data: make(map[string]string),
 	}
-	return nil, errors.New("error cache type")
 }
