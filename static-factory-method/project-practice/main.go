@@ -34,7 +34,7 @@ func (m *MemCache) Get(k string) string {
 	return "Mem data:" + m.data[k]
 }
 
-// 实现 cache 的简单工厂
+// 实现 cache 的简单工厂；与工厂差异从这行开始；核心代码
 type CacheFactory struct{}
 
 type CacheType int

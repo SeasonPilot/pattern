@@ -32,11 +32,12 @@ func (m *MemCache) Get(k string) string {
 	return "Mem data:" + m.data[k]
 }
 
-// 抽象工厂
+// 抽象工厂; 与简单工厂差异从这行开始；核心代码
 type CacheFactory interface {
 	Create() Cache
 }
 
+// 具体工厂函数
 type RedisFactory struct{}
 
 func (c *RedisFactory) Create() Cache {
