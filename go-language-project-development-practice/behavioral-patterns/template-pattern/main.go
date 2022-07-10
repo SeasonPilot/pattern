@@ -9,6 +9,7 @@ type Cooker interface {
 }
 
 // BaseCooker 类似于一个抽象类
+// 超类
 type BaseCooker struct {
 }
 
