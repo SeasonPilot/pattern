@@ -1,19 +1,20 @@
 package strategy_pattern
 
+// IStrategy 定义接口
 type IStrategy interface {
 	Do(int, int) int
 }
 
 type Operator struct {
-	strategy IStrategy
+	strategy IStrategy // 组合接口
 }
 
 func (o *Operator) SetStrategy(strategy IStrategy) {
-	o.strategy = strategy
+	o.strategy = strategy // 给接口赋值具体的实现类
 }
 
 func (o *Operator) Calculate(a, b int) int {
-	return o.strategy.Do(a, b)
+	return o.strategy.Do(a, b) // 调用实现类的方法
 }
 
 type Add struct{}
